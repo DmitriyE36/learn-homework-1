@@ -14,13 +14,30 @@
   и выводя на экран результаты
 
 """
+s1 = input('Введите текст:')
+s2 = input('Введите текст:')
+
+def string_user(s1, s2):
+    s1 = str(s1).lower()
+    s2 = str(s2).lower()
+    if isinstance(s1, str) and isinstance(s2, str):
+        print(0)    ## Поставил print, так как return закрывал на этом условии функцию.
+    if s1 == s2:
+        return 1
+    elif s1 != s2 and len(s1)>len(s2) and s2 != 'learn':   ## Добавил s2 != 'learn'... При вводе, например, "привет"\"learn", возвращает 2,  а не 3 
+        return 2
+    elif s1 != s2 and s2 == 'learn':
+        return 3
 
 def main():
     """
     Эта функция вызывается автоматически при запуске скрипта в консоли
     В ней надо заменить pass на ваш код
     """
-    pass
-    
+    print(string_user(s1, s2))
+    print(string_user('hello', 'hello'))
+    print(string_user(512, 'learn'))
+    print(string_user('good', 'bad'))
+       
 if __name__ == "__main__":
     main()
