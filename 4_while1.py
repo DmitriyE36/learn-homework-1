@@ -19,9 +19,14 @@ def hello_user():
         if user_say == 'Хорошо':
             print('Я рад!')
             break
-    else:
-        print(input('Как твои дела?'))
 
     
 if __name__ == "__main__":
     hello_user()
+
+"""
+Альтернатива:
+user_say = input('как твои дела?')
+while user_say != 'хорошо':
+    user_say = input('как твои дела?')
+"""
