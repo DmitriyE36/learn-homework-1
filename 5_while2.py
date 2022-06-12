@@ -30,8 +30,7 @@ def ask_user(answers_dict):
             print('Пока!')
             break
         print(questions_and_answers.get(answers_dict, 'Не скажу'))
-    else:
-        print(input("Задать вопрос: "))
+
         
 if __name__ == "__main__":
     ask_user(questions_and_answers)
