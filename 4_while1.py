@@ -14,8 +14,19 @@ def hello_user():
     """
     Замените pass на ваш код
     """
-    pass
+    while True:
+        user_say = input('Как твои дела? ')
+        if user_say == 'Хорошо':
+            print('Я рад!')
+            break
 
     
 if __name__ == "__main__":
     hello_user()
+
+"""
+Альтернатива:
+user_say = input('как твои дела?')
+while user_say != 'хорошо':
+    user_say = input('как твои дела?')
+"""
