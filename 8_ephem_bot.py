@@ -23,24 +23,24 @@ logging.basicConfig(level=logging.INFO)
 logger = structlog.getLogger()
 
 def greet_user(update, context):
-    print('Вызван /start')
+    logger.debug('Вызван /start')
     update.message.reply_text('Здравствуй, пользователь!')
 
 def my_planets(update, context):
     input_name = update.message.text.split()
     planet_name = input_name[1].lower().capitalize()
-    print(planet_name)
+    logger.debug(planet_name)
     planet = getattr(ephem, planet_name)
     day = date.today()
-    print(day)
+    logger.debug(day)
     const_day = planet(day)
     const = ephem.constellation(planet(day))
-    print(const)
+    logger.debug(const)
     update.message.reply_text(f'Сегодня {day}, планета {planet_name} находится в созвездии {const}')
     
 def talk_to_me(update, context):
     text = update.message.text
-    print(text)
+    logger.debug(text)
     update.message.reply_text(text)
 
 def main():
