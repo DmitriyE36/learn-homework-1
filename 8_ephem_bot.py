@@ -13,45 +13,47 @@
 
 """
 import logging
-
+import structlog
+import ephem
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from datetime import date
+import settings
 
-logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO,
-                    filename='bot.log')
-
-
-PROXY = {
-    'proxy_url': 'socks5://t1.learn.python.ru:1080',
-    'urllib3_proxy_kwargs': {
-        'username': 'learn',
-        'password': 'python'
-    }
-}
-
+logging.basicConfig(level=logging.INFO)
+logger = structlog.getLogger()
 
 def greet_user(update, context):
-    text = 'Вызван /start'
-    print(text)
-    update.message.reply_text(text)
+    logger.debug('Вызван /start')
+    update.message.reply_text('Здравствуй, пользователь!')
 
-
+def my_planets(update, context):
+    input_name = update.message.text.split()
+    planet_name = input_name[1].lower().capitalize()
+    logger.debug(planet_name)
+    planet = getattr(ephem, planet_name)
+    day = date.today()
+    logger.debug(day)
+    const_day = planet(day)
+    const = ephem.constellation(planet(day))
+    logger.debug(const)
+    update.message.reply_text(f'Сегодня {day}, планета {planet_name} находится в созвездии {const}')
+    
 def talk_to_me(update, context):
-    user_text = update.message.text
-    print(user_text)
+    text = update.message.text
+    logger.debug(text)
     update.message.reply_text(text)
-
 
 def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
+    lp_elfim_bot = Updater(settings.API_KEY, use_context=True)
 
-    dp = mybot.dispatcher
+    dp = lp_elfim_bot.dispatcher
+    dp.add_handler(CommandHandler("planet", my_planets))
     dp.add_handler(CommandHandler("start", greet_user))
-    dp.add_handler(MessageHandler(Filters.text, talk_to_me))
+    dp.add_handler(MessageHandler(Filters.text, talk_to_me, my_planets))
 
-    mybot.start_polling()
-    mybot.idle()
-
+    logger.info("Бот стартовал")
+    lp_elfim_bot.start_polling()
+    lp_elfim_bot.idle()
 
 if __name__ == "__main__":
     main()
